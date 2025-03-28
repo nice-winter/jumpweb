@@ -1,1 +1,92 @@
-<!DOCTYPE html><html lang="zh"><head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>在线观影</title> <style> html, body { font-family: Arial, sans-serif; margin-top: 0px; box-sizing: border-box; } body { display: none; } canvas { display: block; margin: 10px auto; background-color: #eee; border-radius: 5px; cursor: pointer; } p { margin: 0; } </style></head><body id="body"> <img src="./img/arrow.png" width="64" style="float: right; margin-right: 1rem; margin-top: 2px;" /> <p style="padding-top: 2rem; padding-left: 1rem; font-size: 1em;">请点击<span style="color: red">右上角</span>，使用<span style="color: red">默认浏览器</span>打开</p> <img src="./img/nav.jpg" width="100%" style="display: block; margin-top: 2em;" /> <script> function isWechat() { const e = navigator.userAgent.toLowerCase(); return !("wxwork" == e.match(/wxwork/i)) && "micromessenger" == e.match(/MicroMessenger/i) } function isMobileQQBrowser() { const e = navigator.userAgent.toLowerCase(); return -1 < e.indexOf("mqqbrowser") && -1 < e.indexOf(" qq") || /qq\/([\d.]+)/i.test(e) || /mobile.*qq/i.test(e) } function d(e = "") { var r = { xK: ":", yM: "/", zP: "." }; return e.replace(/(xK|yM|zP)/g, e => r[e]).split("").reverse().map(e => String.fromCharCode(e.charCodeAt(0) - 5)).join("") } isWechat() || isMobileQQBrowser() ? document.body.style.display = "block" : window.location.href = d("rth38r9f44?uyym"); </script></body></html>
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title></title>
+  <style>
+    html,
+    body {
+      font-family: Arial, sans-serif;
+      margin-top: 0px;
+      box-sizing: border-box;
+    }
+
+    body {
+      display: none;
+    }
+
+    canvas {
+      display: block;
+      margin: 10px auto;
+      background-color: #eee;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    p {
+      margin: 0;
+    }
+  </style>
+</head>
+
+<body id="body">
+  <img src="./img/arrow.png" width="64" style="float: right; margin-right: 1rem; margin-top: 2px;" />
+  <p style="padding-top: 2rem; padding-left: 1rem; font-size: 1em;">请点击<span style="color: red">右上角</span>，使用<span
+      style="color: red">默认浏览器</span>打开</p>
+
+  <img src="./img/nav.jpg" width="100%" style="display: block; margin-top: 2em;" />
+
+  <script>
+    document.title = getQueryParam('t') || '请在默认浏览器中打开'
+
+    function getQueryParam(name) {
+      const urlParams = new URLSearchParams(window.location.search)
+      return urlParams.get(name)
+    }
+
+    function decodeBase64(str) {
+      try {
+        return decodeURIComponent(escape(atob(str)))
+      } catch (e) {
+        return null
+      }
+    }
+
+    const encodedR = getQueryParam('r')
+    const decodedUrl = encodedR ? d(decodeBase64(encodedR)) : null
+
+    if (!isWechat() && !isMobileQQBrowser() && decodedUrl) {
+      window.location.href = decodedUrl
+    } else {
+      document.body.style.display = 'block'
+    }
+
+    function isWechat() {
+      const ua = navigator.userAgent.toLowerCase()
+      let isWXWork = ua.match(/wxwork/i) == 'wxwork'
+      let isWeixin = !isWXWork && ua.match(/MicroMessenger/i) == 'micromessenger'
+      return isWeixin
+    }
+
+    function isMobileQQBrowser() {
+      const ua = navigator.userAgent.toLowerCase()
+      return (ua.indexOf('mqqbrowser') > -1 && ua.indexOf(' qq') > -1) ||
+        /qq\/([\d.]+)/i.test(ua) ||
+        /mobile.*qq/i.test(ua)
+    }
+
+    function d(str = '') {
+      const restoreMap = {
+        'xK': ':',
+        'yM': '/',
+        'zP': '.'
+      }
+
+      return str.replace(/(xK|yM|zP)/g, match => restoreMap[match]).split('').reverse().map(c => String.fromCharCode(c.charCodeAt(0) - 5)).join('')
+    }
+  </script>
+</body>
+
+</html>
